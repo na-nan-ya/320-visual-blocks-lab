@@ -1,0 +1,206 @@
+{
+  "project": {
+    "id": "ggun83",
+    "name": "Group Task 5",
+    "creationTs": 1775161891688,
+    "lastModifiedTs": 1775162947008,
+    "userSetData": {
+      "description": "",
+      "tags": [],
+      "contactURL": "",
+      "tutorialYouTube": ""
+    }
+  },
+  "graph": {
+    "nodes": [
+      {
+        "id": "code_editor_49lehn",
+        "nodeSpecId": "code_editor",
+        "customData": {
+          "initialWidth": 304,
+          "initialHeight": 368,
+          "previewX": 928,
+          "previewY": 16,
+          "previewWidth": 304,
+          "previewHeight": 368
+        },
+        "uiData": {
+          "posX": 678.8017578125,
+          "posY": 0,
+          "width": 176,
+          "height": 105,
+          "selected": false
+        },
+        "propValues": {
+          "curCode": "void mainImage( out vec4 fragColor, in vec2 fragCoord )\n{\n  vec2 uv = fragCoord.xy / iResolution.xy;\n  vec2 original_uv = uv;\n  //float zoom = (0.9 + 0.1 * sin(iTime * 20.));\n    fragColor = vec4(1.0, 1.0, 0.0, 1.0);\n  //vec2 scaleCenter = vec2(0.5);\n  //uv = (uv - scaleCenter) * zoom + scaleCenter;\n    float t_offset = sin(iTime);\n  //vec4 texel0 = texture(iChannel0, uv);\n//if (texel0.a == 0.0) {\n    vec4 texel0 = fragColor;\n    fragColor = vec4(0.0, 0.0, 0.0, 0.0);\n    for (float y = fragCoord.y; y >= 0.0; y -= 1.0) {\n\t\t float dy = original_uv.y - uv.y;\n\t\t uv.y = y / iResolution.y;\n         t_offset -= 0.5*sin((y) / iResolution.y);\n\t\t uv.x = original_uv.x + sin(t_offset  * ((y - fragCoord.y) / iResolution.y));\n\t\t uv = clamp(uv, vec2(0.1,0.1), vec2(0.9,0.9));\n\t\t texel0 = texture(iChannel0, uv);\n\t\t if (texel0.a != 0.0) {\n\t\t   fragColor = vec4(1.0, vec2(1.0) - vec2(dy), 1.0);\n           break;\n\t\t }\n\t   \n\t}\n}",
+          "hidePreview": false
+        },
+        "inputValues": {
+          "initialCode": ""
+        }
+      },
+      {
+        "id": "live_camera_12cvms",
+        "nodeSpecId": "live_camera",
+        "customData": {
+          "runContinuously": true,
+          "initialWidth": 240,
+          "initialHeight": 320,
+          "previewX": 16,
+          "previewY": 16,
+          "previewWidth": 240,
+          "previewHeight": 320
+        },
+        "uiData": {
+          "posX": 0,
+          "posY": 266.25,
+          "width": 176,
+          "height": 105,
+          "selected": false
+        },
+        "propValues": {
+          "hidePreview": false
+        }
+      },
+      {
+        "id": "landmark_visualizer_wgdc2p",
+        "nodeSpecId": "landmark_visualizer",
+        "customData": {
+          "previewX": 432,
+          "previewY": 32,
+          "previewWidth": 320,
+          "previewHeight": 240
+        },
+        "uiData": {
+          "posX": 672,
+          "posY": 141,
+          "width": 189.603515625,
+          "height": 205,
+          "selected": true
+        },
+        "propValues": {
+          "keypointScale": 1.1065882352941174,
+          "color": "#08fe3d",
+          "boundingBox": false,
+          "hidePreview": false
+        },
+        "incomingEdges": {
+          "landmarkResult": [
+            {
+              "sourceNodeId": "face_detection_9t0i4r",
+              "outputId": "landmarkResult"
+            }
+          ]
+        }
+      },
+      {
+        "id": "face_detection_9t0i4r",
+        "nodeSpecId": "face_detection",
+        "customData": {
+          "previewX": 272,
+          "previewY": 16,
+          "previewWidth": 320,
+          "previewHeight": 240
+        },
+        "uiData": {
+          "posX": 336,
+          "posY": 196.5,
+          "width": 176,
+          "height": 94,
+          "selected": false
+        },
+        "incomingEdges": {
+          "image": [
+            {
+              "sourceNodeId": "live_camera_12cvms",
+              "outputId": "image"
+            }
+          ]
+        }
+      },
+      {
+        "id": "shader_processing_n9j1db",
+        "nodeSpecId": "shader_processing",
+        "customData": {
+          "initialWidth": 240,
+          "initialHeight": 320,
+          "runContinuously": true,
+          "previewX": 272,
+          "previewY": 288,
+          "previewWidth": 240,
+          "previewHeight": 320
+        },
+        "uiData": {
+          "posX": 1021.603515625,
+          "posY": 33.5,
+          "width": 208,
+          "height": 229,
+          "selected": false
+        },
+        "propValues": {
+          "hidePreview": false
+        },
+        "inputValues": {
+          "shader": "vfx-mirror"
+        },
+        "incomingEdges": {
+          "shader": [
+            {
+              "sourceNodeId": "code_editor_49lehn",
+              "outputId": "code"
+            }
+          ],
+          "channel0": [
+            {
+              "sourceNodeId": "landmark_visualizer_wgdc2p",
+              "outputId": "image"
+            }
+          ]
+        }
+      },
+      {
+        "id": "image_mixer_5lodki",
+        "nodeSpecId": "image_mixer",
+        "customData": {
+          "previewX": 528,
+          "previewY": 288,
+          "previewWidth": 320,
+          "previewHeight": 240
+        },
+        "uiData": {
+          "posX": 1389.603515625,
+          "posY": 96.25,
+          "width": 224,
+          "height": 254,
+          "selected": false
+        },
+        "propValues": {
+          "mode": "destination-over",
+          "hidePreview": false
+        },
+        "inputValues": {
+          "topText": "",
+          "midText": "",
+          "bottomText": ""
+        },
+        "incomingEdges": {
+          "image1": [
+            {
+              "sourceNodeId": "shader_processing_n9j1db",
+              "outputId": "image"
+            }
+          ],
+          "image2": [
+            {
+              "sourceNodeId": "live_camera_12cvms",
+              "outputId": "image"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "customNodeUrls": [
+    "https://storage.googleapis.com/tfweb/visualblocks-github-bundles/@visualblocks/gemini@latest/dist/bundle.js"
+  ]
+}
